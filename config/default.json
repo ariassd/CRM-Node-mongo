@@ -1,0 +1,10 @@
+{
+    "App": {
+        "webserver": {
+            "port" : 5000
+        }
+    },
+    "MongoDB" : {
+        "connectionString" : "mongodb+srv://<<db_user>>:<<db_password>>@cluster0-rfej7.mongodb.net/crm-node-angular?retryWrites=true&w=majority"
+    }
+}

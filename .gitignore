@@ -88,3 +88,5 @@ typings/
 .dynamodb/
 
 config/
+.DS_Store
+config/default.json

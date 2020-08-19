@@ -19,7 +19,6 @@ I found and downloaded an HTML template, angular 1 was the easiest way to intera
 ## Technologies
 
 - Javascript
-- light-server ↣ v 2.8.0
 - Node ↣ v 14.7.0
 - Express ↣ v 4.17.1
 - Mongoose ↣ v 5.10.0
@@ -36,7 +35,7 @@ Create a `config/default.json` file in the root of the project and add the follo
     }
   },
   "MongoDB": {
-    "connectionString": "mongodb+srv://<<db_user>>:<<db_password>>@<<host>>/crm"
+    "connectionString": "mongodb+srv://<<db_user>>:<<db_password>>@<<host>>/<<db_name>>?retryWrites=true&w=majority"
   }
 }
 ```
@@ -44,15 +43,15 @@ Create a `config/default.json` file in the root of the project and add the follo
 Install the dependencies
 
 ```bash
+# install dependencies
 $ npm install
 ```
 
 - Run the project
 
 ```bash
-# development
-$ npm run start
-
+# Start development
+$ npm run start:dev
 ```
 
 - Visit the URL `http://localhost:5000`

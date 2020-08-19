@@ -1,31 +1,39 @@
-const express = require('express');
-const Config = require('config')
+const express = require("express");
+const Config = require("config");
 const app = express();
 const PORT = Config.get("App.webserver.port");
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+
+mongoose.set("useUnifiedTopology", true);
+mongoose.set("useNewUrlParser", true);
 mongoose.connect(Config.get("MongoDB.connectionString"));
-mongoose.connection.once('open',() => console.log('Connected to DB!'))
-const Company = require('./Company.js');
+mongoose.connection.once("open", () => logger.log("Connected to DB!"));
+const Company = require("./Company.js");
+const Logger = require("./logger");
 
-app.use(bodyParser.urlencoded({extended:true}));
+const logger = new Logger("CRM");
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static("static"))
+app.use(express.static("front-end"));
 
-
-app.post('/api/company', (req, res) => {
-    //console.log("received request to create new company");
-    //console.log(req.body);
-    if (!req.body || !req.body.name) return res.status(400).send("You need to at least send a name");
-    let companyInstace = new Company(req.body);
-    companyInstace.save()
-        .catch(err => {
-            //console.log(err.toString());
-            res.status(500).send("");
-        }).then(dbres => {
-            //console.log(dbres);
-            res.json(dbres);
-        });
+app.post("/api/company", (req, res) => {
+  //console.log("received request to create new company");
+  //console.log(req.body);
+  if (!req.body || !req.body.name)
+    return res.status(400).send("You need to at least send a name");
+  let companyInstace = new Company(req.body);
+  companyInstace
+    .save()
+    .catch((err) => {
+      //console.log(err.toString());
+      res.status(500).send("");
+    })
+    .then((dbres) => {
+      //console.log(dbres);
+      res.json(dbres);
+    });
 });
 
 /*
@@ -36,47 +44,47 @@ fetch("api/company", {
 })
 */
 
-app.get('/api/company', (req, res) => {
-    Company.find()
-    .catch(err => {
-        //console.log(err.toString());
-        res.status(500).send(err.toString());
+app.get("/api/company", (req, res) => {
+  Company.find()
+    .catch((err) => {
+      //console.log(err.toString());
+      res.status(500).send(err.toString());
     })
-    .then (dbres => {
-        //console.log(dbres);
-        res.json(dbres);
-    }); 
+    .then((dbres) => {
+      //console.log(dbres);
+      res.json(dbres);
+    });
 });
 
-app.delete('/api/company/:id', (req, res) => {
-    let idToDelete = req.params.id;
-    Company.findByIdAndRemove(idToDelete)
-    .catch(err => {
-        //console.log(err.toString());
-        res.status(500).send(err.toString());
+app.delete("/api/company/:id", (req, res) => {
+  let idToDelete = req.params.id;
+  Company.findByIdAndRemove(idToDelete)
+    .catch((err) => {
+      //console.log(err.toString());
+      res.status(500).send(err.toString());
     })
-    .then (dbres => {
-        //console.log(dbres);
-        if (dbres) res.json(dbres);
-        else res.status(404).send("ID doesn't exist");
-    }); 
+    .then((dbres) => {
+      //console.log(dbres);
+      if (dbres) res.json(dbres);
+      else res.status(404).send("ID doesn't exist");
+    });
 });
 
-app.put('/api/company/:id', (req, res) => {
-    
-    let idToUpdate = req.params.id
+app.put("/api/company/:id", (req, res) => {
+  let idToUpdate = req.params.id;
 
-    if (!req.body || !req.body.name) return res.status(400).send("You need to at least send a name");
-    
-    Company.findByIdAndUpdate(idToUpdate, req.body)
-    .catch(err => {
-        //console.log(err.toString());
-        res.status(500).send(err.toString());
+  if (!req.body || !req.body.name)
+    return res.status(400).send("You need to at least send a name");
+
+  Company.findByIdAndUpdate(idToUpdate, req.body)
+    .catch((err) => {
+      //console.log(err.toString());
+      res.status(500).send(err.toString());
     })
-    .then (dbres => {
-        //console.log(dbres);
-        res.json(dbres);
-    }); 
+    .then((dbres) => {
+      //console.log(dbres);
+      res.json(dbres);
+    });
 });
 
 /*
@@ -84,8 +92,12 @@ app.get('/', function(req, res) {
     res.sendFile(`${__dirname}/static/index.html`)
 });= 
 */
- 
-app.listen(PORT, () => {
-    console.log(`Server ${process.env.NODE_ENV || "development"} listening on port ${ PORT}`);
-});
 
+app.listen(PORT, () => {
+  logger.verbose(
+    `Server ${process.env.NODE_ENV || "development"} listening on port ${PORT}`
+  );
+  logger.verbose(
+    `visit the following url ${logger.COLOR.FgBlue}http://localhost:${PORT}`
+  );
+});

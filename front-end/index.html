@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>CRM NodeJs+Angular1+mogoose</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/fontawesome5/css/all.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet"
+		href="https://cdn.rawgit.com/konpa/devicon/df6431e323547add1b4cf45992913f15286456d3/devicon.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<!--===============================================================================================-->
+</head>
+
+<body ng-app="ERM" ng-controller="MainController">
+	<div class="container-contact100">
+		<div class="row">
+			<div class="col-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="row align-items-end">
+							<div class="col-8">
+								<a href="." class="logo">
+									<div>CRM</div>
+									<i class="devicon-nodejs-plain colored"></i>
+									<i class="devicon-angularjs-plain colored"></i>
+									<i class="devicon-mongodb-plain colored"></i>
+								</a>
+							</div>
+							<div class="col-4 align-text-bottom">
+
+								<button class="contact100-form-btn-blue" ng-click="startNewCompanyCreation()">
+									<i class="fa fa-plus"></i>
+								</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title"></h5>
+						<h6 class="card-subtitle mb-2 text-muted"></h6>
+						<p class="card-text">
+						<form action="">
+							<input type="text" id="search" name="search" placeholder="enter company name"
+								ng-model="searchText">
+						</form>
+						</p>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-body">
+						<button class="contact100-form-btn margin-5" title="Save" ng-click="saveCurrentCompany()">
+							<i class="far fa-save"></i>
+						</button>
+						<button class="contact100-form-btn-blue margin-5" title="Delete" ng-If="currentCompany._id"
+							ng-click="deleteCurrentCompany()">
+							<i class="far fa-trash-alt"></i>
+						</button>
+						<button class="contact100-form-btn-blue margin-5" title="Copy" ng-If="currentCompany._id"
+							ng-click="copyCurrentCompany()">
+							<i class="far fa-copy"></i>
+						</button>
+					</div>
+				</div>
+				<div class="card" ng-repeat=" company in filteredCompanies()" ng-click="companyCardClick(company)">
+					<div class="card-body">
+						<h5 class="card-title">{{company.name}}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">{{company.contactName}}</h6>
+						<p class="card-text">
+							{{company.notes}}
+						</p>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-8">
+
+				<div class="wrap-scroll">
+					<div class="wrap-contact100">
+						<form class="contact100-form validate-form">
+							<span class="contact100-form-title">
+								<span>
+									{{pageTitle}}
+								</span>
+							</span>
+
+							<div class="wrap-input100 validate-input" data-validate="Company Name S.A">
+								<label for="name">Company name:</label>
+								<input class="input100" type="text" name="name" placeholder="Company Name S.A"
+									ng-model="currentCompany.name">
+								<span class="focus-input100"></span>
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate="Contact name">
+								<label for="contact">Contact name</label>
+								<input class="input100" type="text" name="contact" placeholder="Contact name"
+									ng-model="currentCompany.contactName">
+								<span class="focus-input100"></span>
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate="Website">
+								<label for="website">Web site address:</label>
+								<input class="input100" type="text" name="website" placeholder="Website"
+									ng-model="currentCompany.website">
+								<span class="focus-input100"></span>
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate="123 av 5 street 5">
+								<label for="address">Address:</label>
+								<input class="input100" type="text" name="address"
+									placeholder="Address: 123 av 5 street 5" ng-model="currentCompany.address">
+								<span class="focus-input100"></span>
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate="New">
+								<label for="status">Status:</label>
+								<input class="input100" type="text" name="status" placeholder="New"
+									ng-model="currentCompany.status">
+								<span class="focus-input100"></span>
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate="e....@a.x">
+								<label for="email">Email:</label>
+								<input class="input100" type="text" name="email" placeholder="e....@a.x"
+									ng-model="currentCompany.email">
+								<span class="focus-input100"></span>
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate="(506) ####-####">
+								<label for="phone">Phone number</label>
+								<input class="input100" type="text" name="phone" placeholder="(506) ####-####"
+									ng-model="currentCompany.phone">
+								<span class="focus-input100"></span>
+							</div>
+
+							<div class="wrap-input100 validate-input" data-validate="Please enter notes">
+								<label for="notes">Notes:</label>
+								<textarea class="input100" name="notes" placeholder=""
+									ng-model="currentCompany.notes"></textarea>
+								<span class="focus-input100"></span>
+							</div>
+
+
+						</form>
+
+						<div class="contact100-more">
+							CRM + <i class="devicon-nodejs-plain colored"></i>
+							+ <i class="devicon-angularjs-plain colored"></i>
+							+ <i class="devicon-mongodb-plain colored"></i>
+							<br />
+							by Luis Arias <span class="contact100-more-highlight">ariassd@gmail.com</span> Oct 2019
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="dropDownSelect1"></div>
+
+	<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>

@@ -11,7 +11,53 @@ Database:
 
 Why angular 1?
 
-I found and downloaded an HTML single page template, angular 1 was the easier way to interact with this template
+I found and downloaded an HTML template, angular 1 was the easiest way to interact with this template
+
+
+## Technologies
+
+- Javascript
+- Node ↣ version 14.7.0
+- Express ↣  version 4.17.1
+- Mongoose ↣ version 5.7.7
+
+## Setup
+
+Create a `config/default.json` file in the root of the project and add the following lines
+
+```json
+{
+  "App": {
+    "webserver": {
+      "port": 5000
+    }
+  },
+  "MongoDB": {
+    "connectionString": "mongodb+srv://<<db_user">>:<<db_password>>@<<host>>/crm"
+  }
+}
+```
+Install the dependencies
+
+```bash
+$ npm install
+```
+
+Run the project
+
+```bash
+# development
+$ npm run start
+
+```
+
+## Features
+
+- CRUD API Rest to manage companies
+
+## Status
+
+Project is: _in progress_ because I'm still developing
 
 ## TODO
 - Registration page as user.
@@ -19,4 +65,10 @@ I found and downloaded an HTML single page template, angular 1 was the easier wa
 - Main menu.
 - Make a UI using a newer version of angular or react.
 
-Luis Arias 2019.
+## Stay in touch
+
+- Author - Luis Arias 2019 <ariassd@gmail.com> - [GitHub profile](https://github.com/ariassd)
+
+## License
+
+This is [MIT licensed](LICENSE)
